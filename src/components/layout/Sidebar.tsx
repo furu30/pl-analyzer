@@ -112,7 +112,7 @@ export default function Sidebar() {
       <aside className="w-64 bg-[#1F4E79] text-white flex flex-col h-full shrink-0">
         <div className="p-4">
           <h1 className="text-xl font-bold tracking-wide">PL Analyzer</h1>
-          <p className="text-xs text-blue-200 mt-1">製造業 損益分析</p>
+          <p className="text-xs text-blue-200 mt-1">損益分析</p>
         </div>
 
         <Separator className="bg-blue-400/30" />
