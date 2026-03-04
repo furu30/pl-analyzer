@@ -138,13 +138,8 @@ export default function UploadPage() {
         };
 
         if (mode === "pdf") {
-          // PDF直接送信（Claude/Gemini用）
+          // PDF直接送信（Claude/Gemini用）— PDFのみ送信しサイズを抑える
           body.pdfBase64 = pdfResult.pdfBase64;
-          // OpenAIフォールバック用にテキスト・画像も添付
-          if (pdfResult.hasText) {
-            body.text = pdfResult.text;
-          }
-          body.images = pdfResult.images;
         } else if (mode === "text") {
           body.text = pdfResult.text;
         } else {
@@ -158,8 +153,18 @@ export default function UploadPage() {
         });
 
         if (!response.ok) {
-          const errData = await response.json();
-          throw new Error(errData.error || "API呼び出しに失敗しました");
+          let errorMessage = "API呼び出しに失敗しました";
+          try {
+            const errData = await response.json();
+            errorMessage = errData.error || errorMessage;
+          } catch {
+            if (response.status === 413) {
+              errorMessage = "PDFファイルのサイズが大きすぎます。ページ数の少ないPDFをお試しください。";
+            } else {
+              errorMessage = `サーバーエラーが発生しました (${response.status})`;
+            }
+          }
+          throw new Error(errorMessage);
         }
 
         const result = await response.json();
@@ -305,8 +310,6 @@ export default function UploadPage() {
 
         if (mode === "pdf") {
           body.pdfBase64 = pdfResult.pdfBase64;
-          if (pdfResult.hasText) body.text = pdfResult.text;
-          body.images = pdfResult.images;
         } else if (mode === "text") {
           body.text = pdfResult.text;
         } else {
@@ -320,8 +323,18 @@ export default function UploadPage() {
         });
 
         if (!response.ok) {
-          const errData = await response.json();
-          throw new Error(errData.error || "API呼び出しに失敗しました");
+          let errorMessage = "API呼び出しに失敗しました";
+          try {
+            const errData = await response.json();
+            errorMessage = errData.error || errorMessage;
+          } catch {
+            if (response.status === 413) {
+              errorMessage = "PDFファイルのサイズが大きすぎます。ページ数の少ないPDFをお試しください。";
+            } else {
+              errorMessage = `サーバーエラーが発生しました (${response.status})`;
+            }
+          }
+          throw new Error(errorMessage);
         }
 
         const result = (await response.json()) as PdfExcelData;
