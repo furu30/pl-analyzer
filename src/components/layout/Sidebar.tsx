@@ -14,8 +14,10 @@ import {
   Save,
   FolderOpen,
   RotateCcw,
+  Play,
 } from "lucide-react";
 import { useRef, useCallback } from "react";
+import { generateDemoData } from "@/lib/demo-data";
 
 const steps = [
   {
@@ -100,6 +102,23 @@ export default function Sidebar() {
     e.target.value = "";
   };
 
+  // ── デモデータ読込 ──
+  const handleLoadDemo = useCallback(() => {
+    if (
+      confirm(
+        "デモデータを読み込みます。現在のデータは上書きされます。よろしいですか？"
+      )
+    ) {
+      const demo = generateDemoData();
+      const json = JSON.stringify(demo);
+      const success = importFromJSON(json);
+      if (success) {
+        saveToLocalStorage();
+        alert("デモデータ（サンプル製造株式会社 3期分）を読み込みました");
+      }
+    }
+  }, [importFromJSON, saveToLocalStorage]);
+
   // ── リセット ──
   const handleReset = () => {
     if (confirm("データをリセットしますか？この操作は取り消せません。")) {
@@ -163,6 +182,15 @@ export default function Sidebar() {
           >
             <FolderOpen className="w-4 h-4 mr-2" />
             データ読込
+          </Button>
+          <Button
+            variant="ghost"
+            size="sm"
+            className="w-full justify-start text-blue-100 hover:text-white hover:bg-white/10"
+            onClick={handleLoadDemo}
+          >
+            <Play className="w-4 h-4 mr-2" />
+            デモデータ
           </Button>
           <input
             ref={fileInputRef}
