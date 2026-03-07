@@ -77,24 +77,59 @@ export function generateDemoData(): {
 
   const scenarios: Scenario[] = [
     {
+      // 現状維持+微成長: 売上微増、コスト横ばい
       id: uuidv4(),
       periodId: period3Id,
-      label: "試算①",
-      salesChangeRate: 5,
+      label: "試算① 現状維持",
+      salesChangeRate: 3,
       variableCostRateChange: 0,
       laborCostChangeRate: 2,
       fixedCostChangeRate: 1,
-      employeeCount: 54,
+      employeeCount: 53,
     },
     {
+      // 売上拡大路線: 営業強化で売上10%増、変動費率改善
       id: uuidv4(),
       periodId: period3Id,
-      label: "試算②",
+      label: "試算② 売上拡大",
       salesChangeRate: 10,
       variableCostRateChange: -1,
       laborCostChangeRate: 3,
       fixedCostChangeRate: 2,
       employeeCount: 55,
+    },
+    {
+      // コスト削減重視: 売上維持、変動費率と固定費を削減
+      id: uuidv4(),
+      periodId: period3Id,
+      label: "試算③ コスト削減",
+      salesChangeRate: 0,
+      variableCostRateChange: -2,
+      laborCostChangeRate: -1,
+      fixedCostChangeRate: -3,
+      employeeCount: 50,
+    },
+    {
+      // 積極投資: 増員+設備投資で売上15%増、固定費も増加
+      id: uuidv4(),
+      periodId: period3Id,
+      label: "試算④ 積極投資",
+      salesChangeRate: 15,
+      variableCostRateChange: 0,
+      laborCostChangeRate: 8,
+      fixedCostChangeRate: 5,
+      employeeCount: 60,
+    },
+    {
+      // 悲観シナリオ: 景気悪化で売上減、コスト上昇
+      id: uuidv4(),
+      periodId: period3Id,
+      label: "試算⑤ 悲観",
+      salesChangeRate: -5,
+      variableCostRateChange: 2,
+      laborCostChangeRate: 1,
+      fixedCostChangeRate: 3,
+      employeeCount: 52,
     },
   ];
 
