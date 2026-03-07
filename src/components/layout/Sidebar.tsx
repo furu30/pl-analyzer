@@ -15,6 +15,7 @@ import {
   FolderOpen,
   RotateCcw,
   Play,
+  BookOpen,
 } from "lucide-react";
 import { useRef, useCallback } from "react";
 import { generateDemoData } from "@/lib/demo-data";
@@ -160,6 +161,21 @@ export default function Sidebar() {
               );
             })}
           </ul>
+
+          {/* 使い方ガイドリンク */}
+          <div className="px-2 mt-3">
+            <Link
+              href="/tutorial"
+              className={`flex items-center gap-2 px-3 py-2 rounded-md text-sm transition-colors ${
+                pathname === "/tutorial"
+                  ? "bg-white/20 text-white font-semibold"
+                  : "text-blue-100/70 hover:bg-white/10 hover:text-white"
+              }`}
+            >
+              <BookOpen className="w-4 h-4 shrink-0" />
+              <span>使い方ガイド</span>
+            </Link>
+          </div>
         </nav>
 
         <Separator className="bg-blue-400/30" />
