@@ -168,13 +168,16 @@ input[type="number"] {
     display: none !important;
   }
 
+  .app-shell {
+    display: block !important;
+    height: auto !important;
+    overflow: visible !important;
+  }
+
   .app-main {
     overflow: visible !important;
     padding: 0 !important;
-  }
-
-  .app-shell {
-    display: block !important;
+    height: auto !important;
   }
 
   .print-report {
