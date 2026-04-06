@@ -143,7 +143,13 @@ input[type="number"] {
   -moz-appearance: textfield;
 }
 
-/* ═══ 印刷用スタイル（レポート出力） ═══ */
+/* ═══ レポート出力 ═══ */
+/* 通常表示時は非表示 */
+.print-report {
+  display: none;
+}
+
+/* 印刷用スタイル */
 @media print {
   @page {
     margin: 10mm;
@@ -154,11 +160,11 @@ input[type="number"] {
     padding: 0 !important;
   }
 
-  /* アプリのシェルを非表示 */
+  /* アプリのシェルとレポート設定UIを非表示 */
   .app-sidebar,
   .app-header,
   .app-footer,
-  .print\:hidden {
+  .report-controls {
     display: none !important;
   }
 

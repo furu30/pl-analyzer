@@ -117,7 +117,7 @@ export default function ReportPage() {
   return (
     <>
       {/* ===== 通常表示（印刷時は非表示） ===== */}
-      <div className="p-4 md:p-6 space-y-6 max-w-3xl print:hidden">
+      <div className="p-4 md:p-6 space-y-6 max-w-3xl report-controls">
         <h1 className="text-2xl font-bold flex items-center gap-2">
           <FileText className="w-6 h-6 text-[#1F4E79]" />
           レポート出力
@@ -194,7 +194,7 @@ export default function ReportPage() {
       </div>
 
       {/* ===== 印刷用レイアウト（通常時は非表示、印刷時のみ表示） ===== */}
-      <div ref={printRef} className="hidden print:block print-report">
+      <div ref={printRef} className="print-report">
         {/* 表紙 */}
         {sections.coverPage && (
           <div className="report-page cover-page">
