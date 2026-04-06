@@ -210,7 +210,7 @@ export default function GrowthChart({ data }: GrowthChartProps) {
             type="number"
             dataKey="x"
             domain={[xRange.min, xRange.max]}
-            tickFormatter={(v: number) => `${v.toFixed(0)}%`}
+            tickFormatter={(v: number) => `${v.toFixed(1)}%`}
             stroke="#6b7280"
             fontSize={12}
           >
