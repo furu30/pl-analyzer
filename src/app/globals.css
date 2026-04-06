@@ -149,7 +149,7 @@ input[type="number"] {
   position: fixed;
   left: -9999px;
   top: 0;
-  width: 210mm;
+  width: 170mm; /* A4(210mm) - @page margin(10mm×2) - padding(10mm×2) */
   pointer-events: none;
   z-index: -1;
 }
