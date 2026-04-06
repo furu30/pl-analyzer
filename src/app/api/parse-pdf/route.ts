@@ -371,6 +371,28 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    // 入力バリデーション
+    const validProviders = ["claude", "gemini", "openai"];
+    if (!validProviders.includes(provider)) {
+      return NextResponse.json(
+        { error: "無効なAIプロバイダーです" },
+        { status: 400 }
+      );
+    }
+    if (apiKey.length > 200 || /[\x00-\x1f]/.test(apiKey)) {
+      return NextResponse.json(
+        { error: "APIキーの形式が不正です" },
+        { status: 400 }
+      );
+    }
+    const validModes = ["text", "image", "pdf", "correction"];
+    if (mode && !validModes.includes(mode)) {
+      return NextResponse.json(
+        { error: "無効な解析モードです" },
+        { status: 400 }
+      );
+    }
+
     // ── 修正モード ──
     if (mode === "correction" && correctionInstruction && currentData) {
       const correctionSystemPrompt = buildSystemPrompt(variableCostItems);
@@ -516,7 +538,7 @@ ${correctionInstruction}
       errMsg.includes("authentication")
     ) {
       return NextResponse.json(
-        { error: `APIキーが無効です。正しいキーを入力してください。\n詳細: ${errMsg}` },
+        { error: "APIキーが無効です。正しいキーを入力してください。" },
         { status: 401 }
       );
     }
@@ -529,7 +551,7 @@ ${correctionInstruction}
       errMsg.includes("quota")
     ) {
       return NextResponse.json(
-        { error: `APIレート制限に達しました。しばらくしてからお試しください。\n詳細: ${errMsg}` },
+        { error: "APIレート制限に達しました。しばらくしてからお試しください。" },
         { status: 429 }
       );
     }
@@ -541,13 +563,13 @@ ${correctionInstruction}
       errMsg.includes("413")
     ) {
       return NextResponse.json(
-        { error: `PDFの画像サイズが大きすぎます。ページ数の少ないPDFをお試しください。\n詳細: ${errMsg}` },
+        { error: "PDFの画像サイズが大きすぎます。ページ数の少ないPDFをお試しください。" },
         { status: 413 }
       );
     }
 
     return NextResponse.json(
-      { error: `PDF解析中にエラーが発生しました。\n詳細: ${errMsg}` },
+      { error: "PDF解析中にエラーが発生しました。しばらくしてからお試しください。" },
       { status: 500 }
     );
   }

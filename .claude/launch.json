@@ -1,1 +1,1 @@
-{"version":"0.0.1","configurations":[{"name":"dev","runtimeExecutable":"npm","runtimeArgs":["run","dev"],"port":3000}]}
+{"version":"0.0.1","configurations":[{"name":"dev","runtimeExecutable":"/opt/homebrew/Cellar/node/23.10.0/bin/node","runtimeArgs":["node_modules/.bin/next","dev","--port","3000"],"port":3000,"cwd":"/Users/furu30/claude-code/経営分析/pl-analyzer"}]}

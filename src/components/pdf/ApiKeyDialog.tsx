@@ -98,7 +98,7 @@ export default function ApiKeyDialog({
             AI APIキー設定
           </DialogTitle>
           <DialogDescription>
-            PDF解析に使用するAIサービスを選択し、APIキーを入力してください。キーはブラウザに保存されます。
+            PDF解析に使用するAIサービスを選択し、APIキーを入力してください。キーはこのセッション中のみ保存されます（タブを閉じると消去されます）。
           </DialogDescription>
         </DialogHeader>
 

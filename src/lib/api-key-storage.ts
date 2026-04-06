@@ -1,3 +1,5 @@
+import { toast } from "sonner";
+
 export type AiProvider = "claude" | "gemini" | "openai";
 
 export interface AiConfig {
@@ -14,17 +16,17 @@ const defaultConfig: AiConfig = {
 
 export function getAiConfig(): AiConfig {
   try {
-    const raw = localStorage.getItem(STORAGE_KEY);
+    const raw = sessionStorage.getItem(STORAGE_KEY);
     if (!raw) {
       // 旧形式からのマイグレーション
-      const oldKey = localStorage.getItem("plAnalyzerClaudeApiKey");
+      const oldKey = sessionStorage.getItem("plAnalyzerClaudeApiKey");
       if (oldKey) {
         const config: AiConfig = {
           provider: "claude",
           keys: { claude: oldKey, gemini: "", openai: "" },
         };
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(config));
-        localStorage.removeItem("plAnalyzerClaudeApiKey");
+        sessionStorage.setItem(STORAGE_KEY, JSON.stringify(config));
+        sessionStorage.removeItem("plAnalyzerClaudeApiKey");
         return config;
       }
       return { ...defaultConfig };
@@ -45,9 +47,9 @@ export function getAiConfig(): AiConfig {
 
 export function setAiConfig(config: AiConfig): void {
   try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(config));
+    sessionStorage.setItem(STORAGE_KEY, JSON.stringify(config));
   } catch {
-    console.error("AI設定の保存に失敗しました");
+    toast.error("API設定の保存に失敗しました");
   }
 }
 

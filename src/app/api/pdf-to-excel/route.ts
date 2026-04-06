@@ -87,6 +87,19 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "APIキーが提供されていません" }, { status: 400 });
     }
 
+    // 入力バリデーション
+    const validProviders = ["claude", "gemini", "openai"];
+    if (!validProviders.includes(provider)) {
+      return NextResponse.json({ error: "無効なAIプロバイダーです" }, { status: 400 });
+    }
+    if (apiKey.length > 200 || /[\x00-\x1f]/.test(apiKey)) {
+      return NextResponse.json({ error: "APIキーの形式が不正です" }, { status: 400 });
+    }
+    const validModes = ["text", "image", "pdf"];
+    if (mode && !validModes.includes(mode)) {
+      return NextResponse.json({ error: "無効な解析モードです" }, { status: 400 });
+    }
+
     const usePdfMode = mode === "pdf" && pdfBase64 && pdfBase64.length > 0;
     const useImageMode = mode === "image" && images && images.length > 0;
 
@@ -244,7 +257,7 @@ export async function POST(request: NextRequest) {
     console.error("PDF to Excel error:", error);
     const errMsg = error instanceof Error ? error.message : String(error);
     return NextResponse.json(
-      { error: `決算書の読み取りに失敗しました。\n詳細: ${errMsg}` },
+      { error: "決算書の読み取りに失敗しました。しばらくしてからお試しください。" },
       { status: 500 }
     );
   }

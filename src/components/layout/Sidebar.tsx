@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useAppStore } from "@/lib/store";
+import { useSidebarStore } from "@/lib/sidebar-store";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import {
@@ -16,9 +17,13 @@ import {
   RotateCcw,
   Play,
   BookOpen,
+  FileText,
+  Building2,
+  X,
 } from "lucide-react";
-import { useRef, useCallback } from "react";
+import { useRef, useCallback, useState } from "react";
 import { generateDemoData } from "@/lib/demo-data";
+import CompanyManagerDialog from "./CompanyManagerDialog";
 
 const steps = [
   {
@@ -51,6 +56,12 @@ const steps = [
     path: "/simulation",
     icon: Calculator,
   },
+  {
+    step: 6,
+    label: "レポート出力",
+    path: "/report",
+    icon: FileText,
+  },
 ];
 
 export default function Sidebar() {
@@ -62,7 +73,9 @@ export default function Sidebar() {
     saveToLocalStorage,
     resetData,
   } = useAppStore();
+  const { isOpen, close } = useSidebarStore();
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const [companyDialogOpen, setCompanyDialogOpen] = useState(false);
 
   // ── データ保存（PCにJSONファイルを直接ダウンロード） ──
   const handleSaveToFile = useCallback(() => {
@@ -129,105 +142,137 @@ export default function Sidebar() {
 
   return (
     <>
-      <aside className="w-64 bg-[#1F4E79] text-white flex flex-col h-full shrink-0">
-        <div className="p-4">
+    <aside
+      className={`
+        fixed inset-y-0 left-0 z-40 w-64 bg-[#1F4E79] text-white flex flex-col h-full shrink-0
+        transform transition-transform duration-200 ease-in-out
+        ${isOpen ? "translate-x-0" : "-translate-x-full"}
+        md:relative md:translate-x-0
+      `}
+    >
+      <div className="p-4 flex items-center justify-between">
+        <div>
           <h1 className="text-xl font-bold tracking-wide">PL Analyzer</h1>
           <p className="text-xs text-blue-200 mt-1">損益分析</p>
         </div>
+        <button
+          onClick={close}
+          className="md:hidden p-1 rounded-md hover:bg-white/10 text-blue-200 hover:text-white"
+          aria-label="メニューを閉じる"
+        >
+          <X className="w-5 h-5" />
+        </button>
+      </div>
 
-        <Separator className="bg-blue-400/30" />
+      <Separator className="bg-blue-400/30" />
 
-        <nav className="flex-1 py-4">
-          <ul className="space-y-1 px-2">
-            {steps.map(({ step, label, path, icon: Icon }) => {
-              const isActive = pathname === path;
-              return (
-                <li key={step}>
-                  <Link
-                    href={path}
-                    className={`flex items-center gap-3 px-3 py-2.5 rounded-md text-sm transition-colors ${
-                      isActive
-                        ? "bg-white/20 text-white font-semibold"
-                        : "text-blue-100 hover:bg-white/10 hover:text-white"
-                    }`}
-                  >
-                    <span className="flex items-center justify-center w-6 h-6 rounded-full bg-white/20 text-xs font-bold shrink-0">
-                      {step}
-                    </span>
-                    <Icon className="w-4 h-4 shrink-0" />
-                    <span>{label}</span>
-                  </Link>
-                </li>
-              );
-            })}
-          </ul>
+      <nav className="flex-1 py-4 overflow-y-auto">
+        <ul className="space-y-1 px-2">
+          {steps.map(({ step, label, path, icon: Icon }) => {
+            const isActive = pathname === path;
+            return (
+              <li key={step}>
+                <Link
+                  href={path}
+                  onClick={close}
+                  className={`flex items-center gap-3 px-3 py-2.5 rounded-md text-sm transition-colors ${
+                    isActive
+                      ? "bg-white/20 text-white font-semibold"
+                      : "text-blue-100 hover:bg-white/10 hover:text-white"
+                  }`}
+                >
+                  <span className="flex items-center justify-center w-6 h-6 rounded-full bg-white/20 text-xs font-bold shrink-0">
+                    {step}
+                  </span>
+                  <Icon className="w-4 h-4 shrink-0" />
+                  <span>{label}</span>
+                </Link>
+              </li>
+            );
+          })}
+        </ul>
 
-          {/* 使い方ガイドリンク */}
-          <div className="px-2 mt-3">
-            <Link
-              href="/tutorial"
-              className={`flex items-center gap-2 px-3 py-2 rounded-md text-sm transition-colors ${
-                pathname === "/tutorial"
-                  ? "bg-white/20 text-white font-semibold"
-                  : "text-blue-100/70 hover:bg-white/10 hover:text-white"
-              }`}
-            >
-              <BookOpen className="w-4 h-4 shrink-0" />
-              <span>使い方ガイド</span>
-            </Link>
-          </div>
-        </nav>
-
-        <Separator className="bg-blue-400/30" />
-
-        <div className="p-3 space-y-1.5">
-          <Button
-            variant="ghost"
-            size="sm"
-            className="w-full justify-start text-blue-100 hover:text-white hover:bg-white/10"
-            onClick={handleSaveToFile}
+        {/* 使い方ガイドリンク */}
+        <div className="px-2 mt-3">
+          <Link
+            href="/tutorial"
+            onClick={close}
+            className={`flex items-center gap-2 px-3 py-2 rounded-md text-sm transition-colors ${
+              pathname === "/tutorial"
+                ? "bg-white/20 text-white font-semibold"
+                : "text-blue-100/70 hover:bg-white/10 hover:text-white"
+            }`}
           >
-            <Save className="w-4 h-4 mr-2" />
-            データ保存
-          </Button>
-          <Button
-            variant="ghost"
-            size="sm"
-            className="w-full justify-start text-blue-100 hover:text-white hover:bg-white/10"
-            onClick={handleLoadClick}
-          >
-            <FolderOpen className="w-4 h-4 mr-2" />
-            データ読込
-          </Button>
-          <Button
-            variant="ghost"
-            size="sm"
-            className="w-full justify-start text-blue-100 hover:text-white hover:bg-white/10"
-            onClick={handleLoadDemo}
-          >
-            <Play className="w-4 h-4 mr-2" />
-            デモデータ
-          </Button>
-          <input
-            ref={fileInputRef}
-            type="file"
-            accept=".json"
-            className="hidden"
-            onChange={handleFileChange}
-          />
-          <Separator className="bg-blue-400/30" />
-          <Button
-            variant="ghost"
-            size="sm"
-            className="w-full justify-start text-red-300 hover:text-red-200 hover:bg-white/10"
-            onClick={handleReset}
-          >
-            <RotateCcw className="w-4 h-4 mr-2" />
-            データリセット
-          </Button>
+            <BookOpen className="w-4 h-4 shrink-0" />
+            <span>使い方ガイド</span>
+          </Link>
         </div>
-      </aside>
+      </nav>
 
+      <Separator className="bg-blue-400/30" />
+
+      <div className="p-3 space-y-1.5">
+        <Button
+          variant="ghost"
+          size="sm"
+          className="w-full justify-start text-blue-100 hover:text-white hover:bg-white/10"
+          onClick={() => setCompanyDialogOpen(true)}
+        >
+          <Building2 className="w-4 h-4 mr-2" />
+          企業管理
+        </Button>
+        <Separator className="bg-blue-400/30" />
+        <Button
+          variant="ghost"
+          size="sm"
+          className="w-full justify-start text-blue-100 hover:text-white hover:bg-white/10"
+          onClick={handleSaveToFile}
+        >
+          <Save className="w-4 h-4 mr-2" />
+          データ保存
+        </Button>
+        <Button
+          variant="ghost"
+          size="sm"
+          className="w-full justify-start text-blue-100 hover:text-white hover:bg-white/10"
+          onClick={handleLoadClick}
+        >
+          <FolderOpen className="w-4 h-4 mr-2" />
+          データ読込
+        </Button>
+        <Button
+          variant="ghost"
+          size="sm"
+          className="w-full justify-start text-blue-100 hover:text-white hover:bg-white/10"
+          onClick={handleLoadDemo}
+        >
+          <Play className="w-4 h-4 mr-2" />
+          デモデータ
+        </Button>
+        <input
+          ref={fileInputRef}
+          type="file"
+          accept=".json"
+          className="hidden"
+          onChange={handleFileChange}
+        />
+        <Separator className="bg-blue-400/30" />
+        <Button
+          variant="ghost"
+          size="sm"
+          className="w-full justify-start text-red-300 hover:text-red-200 hover:bg-white/10"
+          onClick={handleReset}
+        >
+          <RotateCcw className="w-4 h-4 mr-2" />
+          データリセット
+        </Button>
+      </div>
+    </aside>
+
+    <CompanyManagerDialog
+      open={companyDialogOpen}
+      onOpenChange={setCompanyDialogOpen}
+    />
     </>
   );
 }
