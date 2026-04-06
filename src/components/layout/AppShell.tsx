@@ -16,7 +16,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
   }, [loadFromLocalStorage]);
 
   return (
-    <div className="relative flex h-screen overflow-hidden">
+    <div className="app-shell relative flex h-screen overflow-hidden">
       {/* モバイルオーバーレイ */}
       {isOpen && (
         <div
@@ -27,7 +27,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
       <Sidebar />
       <div className="flex flex-col flex-1 overflow-hidden">
         <Header />
-        <main className="flex-1 overflow-auto">{children}</main>
+        <main className="app-main flex-1 overflow-auto">{children}</main>
         <Footer />
       </div>
     </div>

@@ -144,7 +144,7 @@ export default function Sidebar() {
     <>
     <aside
       className={`
-        fixed inset-y-0 left-0 z-40 w-64 bg-[#1F4E79] text-white flex flex-col h-full shrink-0
+        app-sidebar fixed inset-y-0 left-0 z-40 w-64 bg-[#1F4E79] text-white flex flex-col h-full shrink-0
         transform transition-transform duration-200 ease-in-out
         ${isOpen ? "translate-x-0" : "-translate-x-full"}
         md:relative md:translate-x-0

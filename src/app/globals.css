@@ -142,3 +142,95 @@ input[type="number"]::-webkit-outer-spin-button {
 input[type="number"] {
   -moz-appearance: textfield;
 }
+
+/* ═══ 印刷用スタイル（レポート出力） ═══ */
+@media print {
+  @page {
+    margin: 10mm;
+  }
+
+  body {
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  /* アプリのシェルを非表示 */
+  .app-sidebar,
+  .app-header,
+  .app-footer,
+  .print\:hidden {
+    display: none !important;
+  }
+
+  .app-main {
+    overflow: visible !important;
+    padding: 0 !important;
+  }
+
+  .app-shell {
+    display: block !important;
+  }
+
+  .print-report {
+    display: block !important;
+  }
+
+  .report-page {
+    page-break-after: always;
+    padding: 10mm;
+    box-sizing: border-box;
+  }
+  .report-page:last-child {
+    page-break-after: auto;
+  }
+
+  /* 表紙 */
+  .cover-page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    padding: 0;
+    height: 100vh;
+  }
+  .cover-top-bar {
+    position: absolute; top: 0; left: 0; right: 0;
+    height: 8px; background: #1F4E79;
+    -webkit-print-color-adjust: exact; print-color-adjust: exact;
+  }
+  .cover-content { text-align: center; }
+  .cover-company { font-size: 32pt; font-weight: 700; color: #1e1e1e; margin-bottom: 16px; }
+  .cover-title { font-size: 22pt; font-weight: 600; color: #1F4E79; margin-bottom: 24px; }
+  .cover-line { width: 200px; height: 2px; background: #1F4E79; margin: 0 auto 24px; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .cover-period { font-size: 14pt; color: #555; margin-bottom: 8px; }
+  .cover-date { font-size: 12pt; color: #999; }
+  .cover-footer {
+    position: absolute; bottom: 0; left: 0; right: 0;
+    height: 36px; background: #1F4E79; color: white;
+    display: flex; align-items: center; justify-content: center; font-size: 10pt;
+    -webkit-print-color-adjust: exact; print-color-adjust: exact;
+  }
+
+  /* セクション */
+  .report-section-title { font-size: 16pt; font-weight: 700; margin-bottom: 4px; color: #1e1e1e; }
+  .report-unit { font-size: 9pt; color: #999; margin-bottom: 12px; }
+
+  /* テーブル */
+  .report-table { width: 100%; border-collapse: collapse; font-size: 10pt; }
+  .report-table th, .report-table td { padding: 4px 8px; border: 1px solid #ccc; }
+  .report-table thead tr {
+    background: #1F4E79 !important; color: white !important;
+    -webkit-print-color-adjust: exact; print-color-adjust: exact;
+  }
+  .report-table thead th { font-weight: 600; }
+
+  /* 色付き行 */
+  .bg-sales td, .bg-marginal td { background: #E2EFDA !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .bg-variable td { background: #FFF2CC !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .bg-fixed td { background: #FCE4D6 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .bg-profit td { background: #FCE4EC !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+
+  /* Recharts */
+  .recharts-wrapper { margin: 0 auto; }
+}

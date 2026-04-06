@@ -10,7 +10,7 @@ export default function Header() {
   const toggle = useSidebarStore((s) => s.toggle);
 
   return (
-    <header className="h-14 border-b bg-white flex items-center px-3 md:px-6 shrink-0">
+    <header className="app-header h-14 border-b bg-white flex items-center px-3 md:px-6 shrink-0">
       <button
         onClick={toggle}
         className="md:hidden p-2 -ml-1 mr-2 rounded-md hover:bg-gray-100"

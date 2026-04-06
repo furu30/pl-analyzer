@@ -23,7 +23,7 @@ export default function Footer() {
   const hasData = validations.some((v) => v.status !== "empty");
 
   return (
-    <footer className="min-h-[2.5rem] h-auto border-t bg-gray-50 flex flex-wrap items-center px-3 md:px-6 py-1 text-xs shrink-0">
+    <footer className="app-footer min-h-[2.5rem] h-auto border-t bg-gray-50 flex flex-wrap items-center px-3 md:px-6 py-1 text-xs shrink-0">
       <span className="text-muted-foreground mr-3">検算:</span>
       {!hasData ? (
         <span className="text-muted-foreground">データ未入力</span>
