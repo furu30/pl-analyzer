@@ -69,6 +69,22 @@ const NAVY = "#1F3864";
 const BLUE = "#2E75B6";
 const RED = "#C00000";
 
+/** X軸ラベルを\nで改行して2行表示するカスタムtick */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function MultiLineTick(props: any) {
+  const { x, y, payload } = props;
+  const lines = String(payload?.value ?? "").split("\n");
+  return (
+    <text x={x} y={y} textAnchor="middle" fill="#374151" fontSize={10}>
+      {lines.map((line: string, i: number) => (
+        <tspan key={i} x={x} dy={i === 0 ? 12 : 14}>
+          {line}
+        </tspan>
+      ))}
+    </text>
+  );
+}
+
 export default function WaterfallChart({
   previousPeriodLabel,
   currentPeriodLabel,
@@ -141,8 +157,9 @@ export default function WaterfallChart({
           <CartesianGrid strokeDasharray="3 3" vertical={false} />
           <XAxis
             dataKey="name"
-            tick={{ fontSize: 11, fill: "#374151" }}
+            tick={MultiLineTick}
             interval={0}
+            height={50}
           />
           <YAxis
             tickFormatter={formatValue}
