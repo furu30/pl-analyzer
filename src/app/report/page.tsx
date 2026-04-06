@@ -385,7 +385,16 @@ export default function ReportPage() {
       {/* 印刷用CSS */}
       <style jsx global>{`
         @media print {
+          /* ブラウザのヘッダー・フッター（日付・URL）を非表示 */
+          @page {
+            margin: 10mm;
+          }
+
           /* アプリのシェル（サイドバー、ヘッダー、フッター）を非表示 */
+          body {
+            margin: 0 !important;
+            padding: 0 !important;
+          }
           body > div > div > aside,
           body > div > div > div > header,
           body > div > div > div > footer {
@@ -393,6 +402,7 @@ export default function ReportPage() {
           }
           body > div > div > div > main {
             overflow: visible !important;
+            padding: 0 !important;
           }
           body > div > div {
             display: block !important;
@@ -404,8 +414,7 @@ export default function ReportPage() {
 
           .report-page {
             page-break-after: always;
-            padding: 20mm;
-            min-height: 100vh;
+            padding: 10mm;
             box-sizing: border-box;
           }
           .report-page:last-child {
@@ -420,6 +429,7 @@ export default function ReportPage() {
             justify-content: center;
             position: relative;
             padding: 0;
+            height: 100vh;
           }
           .cover-top-bar {
             position: absolute;
