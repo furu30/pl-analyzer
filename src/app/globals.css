@@ -144,9 +144,14 @@ input[type="number"] {
 }
 
 /* ═══ レポート出力 ═══ */
-/* 通常表示時は非表示 */
+/* 通常表示時はビューポート外に配置（display:noneだとRechartsが描画されない） */
 .print-report {
-  display: none;
+  position: fixed;
+  left: -9999px;
+  top: 0;
+  width: 210mm;
+  pointer-events: none;
+  z-index: -1;
 }
 
 /* 印刷用スタイル */
@@ -181,7 +186,11 @@ input[type="number"] {
   }
 
   .print-report {
-    display: block !important;
+    position: static !important;
+    left: auto !important;
+    width: auto !important;
+    pointer-events: auto !important;
+    z-index: auto !important;
   }
 
   .report-page {
